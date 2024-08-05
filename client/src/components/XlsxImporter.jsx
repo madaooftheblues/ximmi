@@ -17,7 +17,7 @@ const XlsxImporter = ({ updateHeads }) => {
         }
       );
       console.log(response.data);
-      updateHeads(response.data);
+      updateHeads(response.data.heads);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -28,7 +28,7 @@ const XlsxImporter = ({ updateHeads }) => {
   return (
     <form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
       <label htmlFor="file">Choose an xlsx file</label>
-      <input type="file" name="file" id="file" />
+      <input type="file" name="file" id="file" accept=".xlsx" />
       <button>Les go!</button>
       {loading && <p>loading...</p>}
     </form>
