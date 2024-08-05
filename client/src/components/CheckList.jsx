@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CheckBox from "./CheckBox";
 
-const CheckList = ({ array }) => {
+const CheckList = ({ array, handleHeadsSubmit }) => {
   const genList = (arr) =>
     arr.map((item, index) => {
       return { label: item, id: `${index}`, key: index, checked: false };
@@ -32,6 +32,7 @@ const CheckList = ({ array }) => {
           onChange={handleChange}
         />
       ))}
+      <button onClick={() => handleHeadsSubmit(list)}>Fetch!</button>
     </div>
   );
 };

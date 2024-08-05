@@ -6,6 +6,7 @@ const upload = multer({ dest: "uploads/" });
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const meta = {
   heads: [],
@@ -28,6 +29,28 @@ app.post("/upload", upload.single("file"), function (req, res, next) {
   Object.assign(meta, { heads, rowCount, path });
 
   res.send(meta);
+});
+
+app.post("/cols", function (req, res, next) {
+  const reader = excel.createReader({
+    input: meta.path,
+  });
+
+  const selected = req.body.selected;
+  const cols = [];
+  selected.forEach((element) => {
+    const colIdx = meta.heads.findIndex((head) => head === element);
+    const colData = [];
+    for (let rowIdx = 1; rowIdx < meta.rowCount; rowIdx++) {
+      const cell = reader.readCell(colIdx, rowIdx);
+      colData.push(cell.v);
+    }
+    cols.push(colData);
+  });
+
+  reader.destroy();
+
+  res.send({ heads: selected, cols });
 });
 
 const PORT = process.env.PORT || 3001;
