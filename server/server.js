@@ -16,30 +16,7 @@ app.post("/upload", upload.single("file"), function (req, res, next) {
   });
   let row = reader.readNext();
   console.log(`Row #${reader.rowIndex + 1}: `, row);
-  res.send("ok");
-});
-
-app.post(
-  "/photos/upload",
-  upload.array("photos", 12),
-  function (req, res, next) {
-    // req.files is array of `photos` files
-    // req.body will contain the text fields, if there were any
-  }
-);
-
-const cpUpload = upload.fields([
-  { name: "avatar", maxCount: 1 },
-  { name: "gallery", maxCount: 8 },
-]);
-app.post("/cool-profile", cpUpload, function (req, res, next) {
-  // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
-  //
-  // e.g.
-  //  req.files['avatar'][0] -> File
-  //  req.files['gallery'] -> Array
-  //
-  // req.body will contain the text fields, if there were any
+  res.send(row);
 });
 
 const PORT = process.env.PORT || 3001;

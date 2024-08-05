@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const XlsxImporter = () => {
+const XlsxImporter = ({ updateHeads }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -16,6 +16,8 @@ const XlsxImporter = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      console.log(response.data);
+      updateHeads(response.data);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {

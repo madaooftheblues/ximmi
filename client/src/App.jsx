@@ -1,10 +1,10 @@
 import "./App.css";
-import XlsxImporter from "./components/XlsxImporter";
+import Playground from "./components/Playground";
 
 function App() {
   return (
     <>
-      <XlsxImporter />
+      <Playground />
     </>
   );
 }
