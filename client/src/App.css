@@ -1,1 +1,61 @@
+#root {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+}
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+button {
+  padding: 1em 2em;
+  color: var(--accent);
+  background-color: var(--dark);
+  transition-duration: 0.5s;
+  border-radius: 10px;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+}
+
+.file-icon {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--dark);
+  padding: 1rem;
+  transition-duration: 0.5s;
+  background-color: var(--accent);
+  border-radius: 30px;
+}
+
+.file-icon:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+}
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  width: 50%;
+}
+
+.submit-form {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.checklist {
+  display: grid;
+  gap: 10px;
+}

@@ -6,12 +6,12 @@ import {
   TableCell,
 } from "@mui/material";
 
-const XTable = ({ heads, rows }) => {
+const XTable = ({ columns, rows }) => {
   return (
     <Table>
       <TableHead>
         <TableRow>
-          {heads.map((h, i) => (
+          {columns.map((h, i) => (
             <TableCell key={i}>{h}</TableCell>
           ))}
         </TableRow>
@@ -19,7 +19,7 @@ const XTable = ({ heads, rows }) => {
       <TableBody>
         {rows.map((r, index) => (
           <TableRow key={index}>
-            {r.map((c, i) => (
+            {Object.values(r).map((c, i) => (
               <TableCell key={i}>{c}</TableCell>
             ))}
           </TableRow>

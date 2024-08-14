@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CheckBox from "./CheckBox";
 
-const CheckList = ({ array, handleHeadsSubmit }) => {
+const CheckList = ({ array, handleColumnsSubmit }) => {
   const genList = (arr) =>
     arr.map((item, index) => {
       return { label: item, id: `${index}`, key: index, checked: false };
@@ -22,7 +22,7 @@ const CheckList = ({ array, handleHeadsSubmit }) => {
   };
 
   return (
-    <div>
+    <div className="checklist">
       {list.map((item) => (
         <CheckBox
           label={item.label}
@@ -32,7 +32,9 @@ const CheckList = ({ array, handleHeadsSubmit }) => {
           onChange={handleChange}
         />
       ))}
-      <button onClick={() => handleHeadsSubmit(list)}>Fetch!</button>
+      {array.length ? (
+        <button onClick={() => handleColumnsSubmit(list)}>Fetch!</button>
+      ) : null}
     </div>
   );
 };

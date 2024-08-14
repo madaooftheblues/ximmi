@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 uploads
+venv
+excel_files
+db.sqlite3
