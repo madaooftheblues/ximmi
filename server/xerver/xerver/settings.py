@@ -135,5 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-    'immig-app-3c01jxtsk-alis-projects-c998e5a6.vercel.app',
+    'https://immig-app-airq6fegi-alis-projects-c998e5a6.vercel.app',
 ]
