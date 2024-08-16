@@ -9,8 +9,13 @@ const Playground = () => {
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState();
   const [columns, setColumns] = useState([]);
+
   const [tabRows, setTabRows] = useState([]);
   const [tabColumns, setTabColumns] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const [columnLoading, setColumnLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
 
@@ -48,26 +53,39 @@ const Playground = () => {
     }
   }, [file]);
 
+  useEffect(() => {
+    handleColumnsSubmit(columns);
+  }, [page, rowsPerPage]);
+
   const handleColumnsSubmit = async (list) => {
-    const columns = list
-      .filter((item) => item.checked)
-      .map((item) => item.label);
     try {
       setDataLoading(true);
       const res = await axios.post("http://127.0.0.1:8000/data/", {
         id: file.id,
-        columns,
+        columns: list,
+        page: page + 1,
+        rowsPerPage,
       });
       console.log(res);
       const columnHeaders = Object.keys(res.data.records[0]);
       console.log(res.data.records);
       setTabColumns([...columnHeaders]);
       setTabRows(res.data.records);
+      setTotalCount(res.data.totalRecords);
     } catch (e) {
       console.log(e);
     } finally {
       setDataLoading(false);
     }
+  };
+
+  const onPageChange = (e, newPage) => {
+    setPage(newPage);
+  };
+
+  const onRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   return (
@@ -79,7 +97,16 @@ const Playground = () => {
         handleColumnsSubmit={handleColumnsSubmit}
         isLoading={columnLoading}
       />
-      <XTable columns={tabColumns} rows={tabRows} isLoading={dataLoading} />
+      <XTable
+        columns={tabColumns}
+        rows={tabRows}
+        isLoading={dataLoading}
+        count={totalCount}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPage}
+      />
     </>
   );
 };

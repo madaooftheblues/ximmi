@@ -38,7 +38,14 @@ const CheckList = ({ array, handleColumnsSubmit, isLoading }) => {
         />
       ))}
       {array.length ? (
-        <Button variant="contained" onClick={() => handleColumnsSubmit(list)}>
+        <Button
+          variant="contained"
+          onClick={() =>
+            handleColumnsSubmit(
+              list.filter((item) => item.checked).map((item) => item.label)
+            )
+          }
+        >
           Fetch!
         </Button>
       ) : null}

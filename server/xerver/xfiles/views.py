@@ -1,9 +1,11 @@
 from django.shortcuts import render
 
+from django.core.paginator import Paginator
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import ExcelFile
 import pandas as pd
+from openpyxl import load_workbook
 
 @api_view(['POST'])
 def upload_file(request):
@@ -32,7 +34,33 @@ def get_columns(request, file_id):
 def get_data(request):
     excel_file = ExcelFile.objects.get(id=request.data.get('id'))
     selected_columns = request.data.get('columns')
-    df = pd.read_excel(excel_file.file.path, usecols=selected_columns)
-    df = df.fillna('')
-    records = df.to_dict('records')
-    return Response({'records': records})
+    page_number = int(request.data.get('page', 1))
+    items_per_page = int(request.data.get('items_per_page', 10))
+
+    wb = load_workbook(filename=excel_file.file.path, read_only=True)
+    ws = wb.active
+
+    # Get the indices of selected columns
+    header_row = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+    col_indices = [header_row.index(col) for col in selected_columns if col in header_row]
+
+    # Calculate the range of rows to read
+    start_row = (page_number - 1) * items_per_page + 2  # +2 to skip header and account for 1-indexing
+    end_row = start_row + items_per_page
+
+    records = []
+    for row in ws.iter_rows(min_row=start_row, max_row=end_row, values_only=True):
+        record = {selected_columns[i]: row[col_indices[i]] for i in range(len(selected_columns))}
+        records.append(record)
+
+    total_rows = ws.max_row - 1  # Subtract 1 to exclude header row
+    total_pages = (total_rows + items_per_page - 1) // items_per_page
+
+    wb.close()
+
+    return Response({
+        'records': records,
+        'page': page_number,
+        'totalPages': total_pages,
+        'totalRecords': total_rows,
+    })
