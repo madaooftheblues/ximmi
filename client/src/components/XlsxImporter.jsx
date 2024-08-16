@@ -11,7 +11,7 @@ const XlsxImporter = ({ updateFiles }) => {
     const formData = new FormData(e.target);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/upload",
+        "https://ximmi.onrender.com/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
