@@ -1,3 +1,4 @@
+import { Paper, Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
@@ -21,21 +22,26 @@ const XlsxImporter = ({ updateFiles }) => {
       console.error("Error uploading file:", error);
     } finally {
       setLoading(false);
+      updateFiles();
     }
   };
 
   return (
-    <form
-      encType="multipart/form-data"
-      method="post"
-      onSubmit={handleSubmit}
-      className="submit-form"
-    >
-      <label htmlFor="file">Choose an xlsx file </label>
-      <input type="file" name="file" id="file" accept=".xlsx" />
-      <button>Submit</button>
-      {loading && <p>loading...</p>}
-    </form>
+    <Paper>
+      <form
+        encType="multipart/form-data"
+        method="post"
+        onSubmit={handleSubmit}
+        className="submit-form"
+      >
+        <label htmlFor="file">Choose an xlsx file </label>
+        <input type="file" name="file" id="file" accept=".xlsx" />
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
+        {loading && <p>loading...</p>}
+      </form>
+    </Paper>
   );
 };
 

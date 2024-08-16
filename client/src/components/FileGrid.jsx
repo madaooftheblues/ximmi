@@ -1,20 +1,22 @@
+import Paper from "@mui/material/Paper";
+
 const FileGrid = ({ files, setFile }) => {
   return (
-    <div className="file-grid">
+    <Paper className="file-grid">
       {files &&
         files.map((file) => {
           return (
-            <div
+            <Paper
               key={file.id}
               onClick={() => setFile(file)}
-              className="file-icon"
+              className="file-container"
             >
               <img src="/excel.png" alt="excel icon" className="icon" />
               <p>{file.name}</p>
-            </div>
+            </Paper>
           );
         })}
-    </div>
+    </Paper>
   );
 };
 

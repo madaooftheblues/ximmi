@@ -1,15 +1,19 @@
+import { Checkbox, FormControlLabel } from "@mui/material";
+
 const CheckBox = ({ label, id, checked, onChange }) => {
   return (
-    <div>
-      <input
-        type="checkbox"
-        name={label}
-        id={id}
-        checked={checked}
-        onChange={onChange}
-      />
-      <label htmlFor={id}>{label}</label>
-    </div>
+    <FormControlLabel
+      label={label}
+      control={
+        <Checkbox
+          type="checkbox"
+          name={label}
+          id={id}
+          checked={checked}
+          onChange={onChange}
+        />
+      }
+    />
   );
 };
 

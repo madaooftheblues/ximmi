@@ -33,5 +33,6 @@ def get_data(request):
     excel_file = ExcelFile.objects.get(id=request.data.get('id'))
     selected_columns = request.data.get('columns')
     df = pd.read_excel(excel_file.file.path, usecols=selected_columns)
+    df = df.fillna('')
     records = df.to_dict('records')
     return Response({'records': records})

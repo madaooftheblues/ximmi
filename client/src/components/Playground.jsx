@@ -5,24 +5,14 @@ import XTable from "./XTable";
 import axios from "axios";
 import FileGrid from "./FileGrid";
 
-function colsToRows(matrix) {
-  const rows = [];
-  for (let i = 0; i < matrix[0].length; i++) {
-    const row = [];
-    for (let j = 0; j < matrix.length; j++) {
-      row.push(matrix[j][i]);
-    }
-    rows.push(row);
-  }
-  return rows;
-}
-
 const Playground = () => {
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState();
   const [columns, setColumns] = useState([]);
   const [tabRows, setTabRows] = useState([]);
   const [tabColumns, setTabColumns] = useState([]);
+  const [columnLoading, setColumnLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
 
   const fetchFiles = async () => {
     try {
@@ -37,11 +27,14 @@ const Playground = () => {
 
   const fetchColumns = async (id) => {
     try {
+      setColumnLoading(true);
       const response = await axios.get("http://127.0.0.1:8000/columns/" + id);
       console.log(response.data);
       setColumns([...response.data.columns]);
     } catch (error) {
       console.error("Error fetching files:", error);
+    } finally {
+      setColumnLoading(false);
     }
   };
 
@@ -59,23 +52,34 @@ const Playground = () => {
     const columns = list
       .filter((item) => item.checked)
       .map((item) => item.label);
-    const res = await axios.post("http://127.0.0.1:8000/data/", {
-      id: file.id,
-      columns,
-    });
-    console.log(res);
-    const columnHeaders = Object.keys(res.data.records[0]);
-    console.log(res.data.records);
-    setTabColumns([...columnHeaders]);
-    setTabRows(res.data.records);
+    try {
+      setDataLoading(true);
+      const res = await axios.post("http://127.0.0.1:8000/data/", {
+        id: file.id,
+        columns,
+      });
+      console.log(res);
+      const columnHeaders = Object.keys(res.data.records[0]);
+      console.log(res.data.records);
+      setTabColumns([...columnHeaders]);
+      setTabRows(res.data.records);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setDataLoading(false);
+    }
   };
 
   return (
     <>
       <FileGrid files={files} setFile={setFile} />
-      <XlsxImporter updateColumns={setFiles} />
-      <CheckList array={columns} handleColumnsSubmit={handleColumnsSubmit} />
-      <XTable columns={tabColumns} rows={tabRows} />
+      <XlsxImporter updateColumns={setFiles} updateFiles={fetchFiles} />
+      <CheckList
+        array={columns}
+        handleColumnsSubmit={handleColumnsSubmit}
+        isLoading={columnLoading}
+      />
+      <XTable columns={tabColumns} rows={tabRows} isLoading={dataLoading} />
     </>
   );
 };

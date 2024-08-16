@@ -1,50 +1,45 @@
 #root {
   min-height: 100dvh;
-  display: grid;
-  place-items: center;
+}
+
+#root > * {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 2rem;
+  margin-block: 2rem;
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 
-button {
-  padding: 1em 2em;
-  color: var(--accent);
-  background-color: var(--dark);
+.file-container {
+  text-align: center;
+  padding: 2rem;
   transition-duration: 0.5s;
-  border-radius: 10px;
-  border: none;
-}
-
-button:hover {
-  cursor: pointer;
-  transform: scale(1.1);
-  transition-duration: 0.5s;
-}
-
-.file-icon {
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--dark);
-  padding: 1rem;
-  transition-duration: 0.5s;
-  background-color: var(--accent);
   border-radius: 30px;
 }
 
-.file-icon:hover {
+.file-container:hover {
   cursor: pointer;
   transform: scale(1.1);
   transition-duration: 0.5s;
+}
+
+.file-container > p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1.6rem;
 }
 
 .file-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
-  width: 50%;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2.4rem;
 }
 
 .submit-form {
@@ -57,5 +52,10 @@ button:hover {
 
 .checklist {
   display: grid;
-  gap: 10px;
+  gap: 2.4rem;
+}
+
+.center {
+  display: grid;
+  place-items: center;
 }
