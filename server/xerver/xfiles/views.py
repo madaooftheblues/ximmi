@@ -26,8 +26,20 @@ def list_files(request):
 @api_view(['GET'])
 def get_columns(request, file_id):
     excel_file = ExcelFile.objects.get(id=file_id)
-    df = pd.read_excel(excel_file.file.path)
-    columns = df.columns.tolist()
+    
+    # Load only the worksheet properties and header row
+    wb = load_workbook(filename=excel_file.file.path, read_only=True)
+    ws = wb.active
+    
+    # Get the first row (header)
+    header_row = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+    
+    # Close the workbook to free up resources
+    wb.close()
+    
+    # Convert header row to list and filter out None values
+    columns = [col for col in header_row if col is not None]
+    
     return Response({'columns': columns})
 
 @api_view(['POST'])
@@ -35,7 +47,7 @@ def get_data(request):
     excel_file = ExcelFile.objects.get(id=request.data.get('id'))
     selected_columns = request.data.get('columns')
     page_number = int(request.data.get('page', 1))
-    items_per_page = int(request.data.get('items_per_page', 10))
+    items_per_page = int(request.data.get('rowsPerPage', 10))
 
     wb = load_workbook(filename=excel_file.file.path, read_only=True)
     ws = wb.active

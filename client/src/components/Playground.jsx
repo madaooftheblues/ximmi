@@ -9,6 +9,7 @@ const Playground = () => {
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState();
   const [columns, setColumns] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   const [tabRows, setTabRows] = useState([]);
   const [tabColumns, setTabColumns] = useState([]);
@@ -54,7 +55,7 @@ const Playground = () => {
   }, [file]);
 
   useEffect(() => {
-    handleColumnsSubmit(columns);
+    handleColumnsSubmit(selected);
   }, [page, rowsPerPage]);
 
   const handleColumnsSubmit = async (list) => {
@@ -96,6 +97,7 @@ const Playground = () => {
         array={columns}
         handleColumnsSubmit={handleColumnsSubmit}
         isLoading={columnLoading}
+        updateSelected={setSelected}
       />
       <XTable
         columns={tabColumns}

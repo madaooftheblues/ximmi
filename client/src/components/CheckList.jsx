@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import CheckBox from "./CheckBox";
 import { Paper, Button, CircularProgress } from "@mui/material";
 
-const CheckList = ({ array, handleColumnsSubmit, isLoading }) => {
+const CheckList = ({
+  array,
+  handleColumnsSubmit,
+  isLoading,
+  updateSelected,
+}) => {
   const genList = (arr) =>
     arr.map((item, index) => {
       return { label: item, id: `${index}`, key: index, checked: false };
@@ -40,11 +45,13 @@ const CheckList = ({ array, handleColumnsSubmit, isLoading }) => {
       {array.length ? (
         <Button
           variant="contained"
-          onClick={() =>
-            handleColumnsSubmit(
-              list.filter((item) => item.checked).map((item) => item.label)
-            )
-          }
+          onClick={() => {
+            const l = list
+              .filter((item) => item.checked)
+              .map((item) => item.label);
+            updateSelected(l);
+            handleColumnsSubmit(l);
+          }}
         >
           Fetch!
         </Button>
