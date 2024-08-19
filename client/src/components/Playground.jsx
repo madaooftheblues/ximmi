@@ -4,6 +4,7 @@ import XlsxImporter from "./XlsxImporter";
 import XTable from "./XTable";
 import axios from "axios";
 import FileGrid from "./FileGrid";
+import ExcelToCsvConverter from "./ExcelToCsvConverter";
 
 const Playground = () => {
   const [files, setFiles] = useState([]);
@@ -91,7 +92,8 @@ const Playground = () => {
 
   return (
     <>
-      <FileGrid files={files} setFile={setFile} />
+      <FileGrid files={files} currentFile={file} setFile={setFile} />
+      {file?.id && <ExcelToCsvConverter fileId={file.id} />}
       <XlsxImporter updateColumns={setFiles} updateFiles={fetchFiles} />
       <CheckList
         array={columns}
