@@ -23,7 +23,7 @@ const Playground = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/files");
+      const response = await axios.get("https://ximmi.onrender.com/files");
       console.log(response.data);
       setFiles([...response.data]);
       console.log(files);
@@ -35,7 +35,9 @@ const Playground = () => {
   const fetchColumns = async (id) => {
     try {
       setColumnLoading(true);
-      const response = await axios.get("http://127.0.0.1:8000/columns/" + id);
+      const response = await axios.get(
+        "https://ximmi.onrender.com/columns/" + id
+      );
       console.log(response.data);
       setColumns([...response.data.columns]);
     } catch (error) {
@@ -62,7 +64,7 @@ const Playground = () => {
   const handleColumnsSubmit = async (list) => {
     try {
       setDataLoading(true);
-      const res = await axios.post("http://127.0.0.1:8000/data/", {
+      const res = await axios.post("https://ximmi.onrender.com/data/", {
         id: file.id,
         columns: list,
         page: page + 1,

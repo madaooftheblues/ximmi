@@ -26,7 +26,12 @@ SECRET_KEY = 'django-insecure-9jbu%)n$#k49#xp-9=nb*%x*az(!s@2(@g63m@0y-95vmrew%u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ximmi.onrender.com',        # Your Render domain
+    'immig-app-3c01jxtsk-alis-projects-c998e5a6.vercel.app',  # Your Vercel domain
+    'localhost',                 # Allow local development
+    '127.0.0.1',                 # Allow local development
+]
 
 
 # Application definition
@@ -131,4 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
+    'https://immig-app-airq6fegi-alis-projects-c998e5a6.vercel.app',
 ]
