@@ -1,11 +1,14 @@
 from django.shortcuts import render
-
 from django.core.paginator import Paginator
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import ExcelFile
-import pandas as pd
 from openpyxl import load_workbook
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+import csv
+import io
+
 
 @api_view(['POST'])
 def upload_file(request):
@@ -76,3 +79,28 @@ def get_data(request):
         'totalPages': total_pages,
         'totalRecords': total_rows,
     })
+
+@api_view(['GET'])
+def convert_excel_to_csv(request, pk):
+    # Get the ExcelFile instance
+    excel_file = get_object_or_404(ExcelFile, pk=pk)
+
+    if not excel_file.file:
+        return Response({'error': 'No file associated with this record'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Load the Excel file
+    wb = load_workbook(excel_file.file.path)
+    sheet = wb.active
+
+    # Create a CSV file in memory
+    csv_buffer = io.StringIO()
+    csv_writer = csv.writer(csv_buffer)
+
+    # Write data from Excel to CSV
+    for row in sheet.iter_rows(values_only=True):
+        csv_writer.writerow(row)
+
+    # Prepare the response
+    response = HttpResponse(csv_buffer.getvalue(), content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{excel_file.name}.csv"'
+    return response
