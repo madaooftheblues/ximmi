@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'pandas',
     'corsheaders',
     'openpyxl',
+    'celery'
 ]
 
 MIDDLEWARE = [
@@ -138,3 +140,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'https://immig-app-airq6fegi-alis-projects-c998e5a6.vercel.app',
 ]
+
+load_dotenv()
+
+DB_KEY = os.getenv("DB_KEY")
+DB_NAME = os.getenv("DB_NAME")

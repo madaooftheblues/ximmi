@@ -5,6 +5,7 @@ import XTable from "./XTable";
 import axios from "axios";
 import FileGrid from "./FileGrid";
 import ExcelToCsvConverter from "./ExcelToCsvConverter";
+import { API_BASE } from "../constants";
 
 const Playground = () => {
   const [files, setFiles] = useState([]);
@@ -23,7 +24,7 @@ const Playground = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await axios.get("https://ximmi.onrender.com/files");
+      const response = await axios.get(`${API_BASE}/files`);
       console.log(response.data);
       setFiles([...response.data]);
       console.log(files);
@@ -35,9 +36,7 @@ const Playground = () => {
   const fetchColumns = async (id) => {
     try {
       setColumnLoading(true);
-      const response = await axios.get(
-        "https://ximmi.onrender.com/columns/" + id
-      );
+      const response = await axios.get(`${API_BASE}/columns/${id}`);
       console.log(response.data);
       setColumns([...response.data.columns]);
     } catch (error) {
@@ -64,7 +63,7 @@ const Playground = () => {
   const handleColumnsSubmit = async (list) => {
     try {
       setDataLoading(true);
-      const res = await axios.post("https://ximmi.onrender.com/data/", {
+      const res = await axios.post(`${API_BASE}/data/`, {
         id: file.id,
         columns: list,
         page: page + 1,
@@ -95,7 +94,7 @@ const Playground = () => {
   return (
     <>
       <FileGrid files={files} currentFile={file} setFile={setFile} />
-      {file?.id && <ExcelToCsvConverter fileId={file.id} />}
+      {file && <ExcelToCsvConverter file={file} />}
       <XlsxImporter updateColumns={setFiles} updateFiles={fetchFiles} />
       <CheckList
         array={columns}

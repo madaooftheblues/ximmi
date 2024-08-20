@@ -1,6 +1,7 @@
 import { Paper, Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import { API_BASE } from "../constants";
 
 const XlsxImporter = ({ updateFiles }) => {
   const [loading, setLoading] = useState(false);
@@ -10,13 +11,9 @@ const XlsxImporter = ({ updateFiles }) => {
     setLoading(true);
     const formData = new FormData(e.target);
     try {
-      const response = await axios.post(
-        "https://ximmi.onrender.com/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${API_BASE}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       console.log(response.data);
     } catch (error) {
       console.error("Error uploading file:", error);
