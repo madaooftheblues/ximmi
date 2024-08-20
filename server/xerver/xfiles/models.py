@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 import os
 
 class ExcelFile(models.Model):
@@ -8,11 +10,8 @@ class ExcelFile(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     hash = models.CharField(max_length=32)
 
-    def delete(self, *args, **kwargs):
-        # Delete the file from the filesystem
-        if self.file:
-            file_path = self.file.path
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        # Delete the model instance
-        super().delete(*args, **kwargs)
+@receiver(post_delete, sender=ExcelFile)
+def delete_file_on_delete(sender, instance, **kwargs):
+    if instance.file:
+        if os.path.isfile(instance.file.path):
+            os.remove(instance.file.path)
