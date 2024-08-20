@@ -6,19 +6,25 @@ from .models import ExcelFile
 from openpyxl import load_workbook
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from .utils import generate_md5_hash, file_exists
 
 from .tasks import excel_to_csv
 
 @api_view(['POST'])
 def upload_file(request):
-    if request.method == 'POST':
-        file = request.FILES['file']
-        excel_file = ExcelFile.objects.create(
-            file=file,
-            name=file.name,
-            size=file.size
-        )
-        return Response({'id': excel_file.id, 'name': excel_file.name})
+    file = request.FILES['file']
+    hash = generate_md5_hash(file)
+
+    if file_exists(hash):
+        return Response("File already exists!")
+
+    excel_file = ExcelFile.objects.create(
+        file=file,
+        name=file.name,
+        size=file.size,
+        hash=hash
+    )
+    return Response({'id': excel_file.id, 'name': excel_file.name})
 
 @api_view(['GET'])
 def list_files(request):

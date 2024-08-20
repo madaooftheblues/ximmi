@@ -6,6 +6,7 @@ class ExcelFile(models.Model):
     name = models.CharField(max_length=255)
     size = models.IntegerField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    hash = models.CharField(max_length=32)
 
     def delete(self, *args, **kwargs):
         # Delete the file from the filesystem
