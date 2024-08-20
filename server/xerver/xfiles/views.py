@@ -23,7 +23,7 @@ def upload_file(request):
         size=file.size,
         hash=hash
     )
-    task = process_excel_file(excel_file.file.path)
+    task = process_excel_file.delay(excel_file.file.path)
     return Response({'id': excel_file.id, 'name': excel_file.name, "task_id": str(task.id)})
 
 @api_view(['GET'])
