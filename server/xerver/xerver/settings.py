@@ -146,3 +146,5 @@ load_dotenv()
 
 DB_KEY = os.getenv("DB_KEY")
 DB_NAME = os.getenv("DB_NAME")
+
+BROKER_URL = os.getenv("BROKER_URL")
