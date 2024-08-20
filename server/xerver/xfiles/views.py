@@ -7,8 +7,7 @@ from openpyxl import load_workbook
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from .utils import generate_md5_hash, file_exists
-
-from .tasks import excel_to_csv
+from .tasks import excel_to_csv, process_excel_file
 
 @api_view(['POST'])
 def upload_file(request):
@@ -24,7 +23,8 @@ def upload_file(request):
         size=file.size,
         hash=hash
     )
-    return Response({'id': excel_file.id, 'name': excel_file.name})
+    task = process_excel_file(excel_file.file.path)
+    return Response({'id': excel_file.id, 'name': excel_file.name, "task_id": str(task.id)})
 
 @api_view(['GET'])
 def list_files(request):
