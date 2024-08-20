@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'ximmi.onrender.com',        # Your Render domain
+    'https://ximmi-b3s1.onrender.com',
     'immig-app-3c01jxtsk-alis-projects-c998e5a6.vercel.app',  # Your Vercel domain
     'localhost',                 # Allow local development
     '127.0.0.1',                 # Allow local development
